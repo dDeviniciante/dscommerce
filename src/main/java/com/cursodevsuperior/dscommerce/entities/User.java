@@ -3,19 +3,24 @@ package com.cursodevsuperior.dscommerce.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //O banco de dados será responsável por gerar o ID
     private long id;
     private String name;
     private String email;
     private String phone;
     private LocalDate birthDate;
     private String password;
+
+    @OneToMany(mappedBy = "client") //Olhe para o atributo chamado client da classe Order. será o responsável por controlar essa relação
+    private List<Order> orders = new ArrayList<>();
 
     public User() {
     }
@@ -75,5 +80,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 }
