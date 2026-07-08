@@ -14,6 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //O banco de dados será responsável por gerar o ID
     private long id;
     private String name;
+    @Column(unique = true) // O banco não deve permitir repetição de E-mail!
     private String email;
     private String phone;
     private LocalDate birthDate;
@@ -21,6 +22,8 @@ public class User {
 
     @OneToMany(mappedBy = "client") //Olhe para o atributo chamado client da classe Order. será o responsável por controlar essa relação
     private List<Order> orders = new ArrayList<>();
+
+
 
     public User() {
     }

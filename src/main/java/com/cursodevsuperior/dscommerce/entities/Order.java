@@ -3,6 +3,8 @@ package com.cursodevsuperior.dscommerce.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -23,6 +25,8 @@ public class Order {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) //Informa que a relação já foi mapeada no atributo Order /  cascade = CascadeType.ALL qualquer operação feita em Order (persistir, remover, atualizar) será propagada para Payment.
     private Payment payment;
 
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
 
