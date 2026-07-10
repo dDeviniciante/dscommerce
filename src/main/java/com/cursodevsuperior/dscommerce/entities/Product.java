@@ -92,4 +92,17 @@ public class Product {
     public List<Order> getOrders() {
         return orderItems.stream().map(x -> x.getOrder()).toList(); //percorre Order pega os pedidos e armazena em uma lista
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id);
+    }
 }
