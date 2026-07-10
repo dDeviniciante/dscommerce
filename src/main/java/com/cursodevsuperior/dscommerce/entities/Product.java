@@ -3,6 +3,7 @@ package com.cursodevsuperior.dscommerce.entities;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -64,6 +65,14 @@ public class Product {
         this.description = description;
     }
 
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
     public String getImgUrl() {
         return imgUrl;
     }
@@ -80,4 +89,7 @@ public class Product {
         this.price = price;
     }
 
+    public List<Order> getOrders() {
+        return orderItems.stream().map(x -> x.getOrder()).toList(); //percorre Order pega os pedidos e armazena em uma lista
+    }
 }

@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 @Table(name = "tb_order_item")
 public class OrderItem {
 
-    @EmbeddedId
+    @EmbeddedId //Usa a classe @Embeddable como Primary Key.
     private OrderItemPK id = new OrderItemPK();
 
     private Integer quantity;

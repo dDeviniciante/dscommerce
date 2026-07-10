@@ -4,7 +4,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-@Embeddable
+@Embeddable //Classe que agrupa os campos da chave composta.
 public class OrderItemPK  { // essa classe representa uma chave primaria composta
 
         @ManyToOne
