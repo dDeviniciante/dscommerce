@@ -32,14 +32,29 @@ public class ProductService { // essa camada devolve um DTO
     @Transactional
     public ProductDTO insert(ProductDTO dto) { // insere dados no BD
 
-        Product entity = new Product();
+        Product entity = new Product(); //instancia
+        copyDtoToEntity(dto, entity); // copia
+        entity = Repository.save(entity); // salva
+
+        return new ProductDTO(entity);
+    }
+
+    @Transactional
+    public ProductDTO update(long id, ProductDTO dto) { // insere dados no BD
+
+        Product entity = Repository.getReferenceById(id); // instacia com a referencia
+        copyDtoToEntity(dto, entity); // instancia
+        entity = Repository.save(entity); // salva
+
+        return new ProductDTO(entity);
+    }
+
+    private void copyDtoToEntity(ProductDTO dto, Product entity) {
         entity.setName(dto.getName());
         entity.setImgUrl(dto.getImgUrl());
         entity.setPrice(dto.getPrice());
         entity.setDescription(dto.getDescription());
-        entity = Repository.save(entity);
-
-        return new ProductDTO(entity);
     }
+
 
 }

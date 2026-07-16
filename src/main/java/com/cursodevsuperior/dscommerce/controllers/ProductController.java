@@ -39,4 +39,9 @@ public class ProductController { //recurso é o conceito, controlador é a forma
         return ResponseEntity.created(uri).body(dto);
     }
 
+    @PutMapping(value = "/{id}" )
+    public ResponseEntity<ProductDTO> update (@PathVariable long id, @RequestBody ProductDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
+    }
 }
