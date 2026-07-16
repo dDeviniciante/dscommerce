@@ -1,6 +1,7 @@
 package com.cursodevsuperior.dscommerce.controllers.handlers;
 
 import com.cursodevsuperior.dscommerce.dto.CustomError;
+import com.cursodevsuperior.dscommerce.services.DatabaseException;
 import com.cursodevsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -18,5 +19,13 @@ import java.time.Instant;
             CustomError err = new CustomError(Instant.now(),status.value(), e.getMessage(), request.getRequestURI());
             return ResponseEntity.status(status).body(err);
         }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<CustomError> database(DatabaseException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomError err = new CustomError(Instant.now(),status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
     }
 

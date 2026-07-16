@@ -4,10 +4,13 @@ import com.cursodevsuperior.dscommerce.dto.ProductDTO;
 import com.cursodevsuperior.dscommerce.entities.Product;
 import com.cursodevsuperior.dscommerce.repositories.ProductRepository;
 import com.cursodevsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -43,17 +46,27 @@ public class ProductService { // essa camada devolve um DTO
 
     @Transactional
     public ProductDTO update(long id, ProductDTO dto) { // insere dados no BD
-
-        Product entity = Repository.getReferenceById(id); // instacia com a referencia
-        copyDtoToEntity(dto, entity); // instancia
-        entity = Repository.save(entity); // salva
-
-        return new ProductDTO(entity);
+        try {
+            Product entity = Repository.getReferenceById(id); // instacia com a referencia
+            copyDtoToEntity(dto, entity); // instancia
+            entity = Repository.save(entity); // salva
+            return new ProductDTO(entity);
+        }
+        catch (EntityNotFoundException e) {}
+           throw new ResourceNotFoundException("Product not found");
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        Repository.deleteById(id);
+        if (!Repository.existsById(id)) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
+        try {
+            Repository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 
     private void copyDtoToEntity(ProductDTO dto, Product entity) {
