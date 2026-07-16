@@ -21,7 +21,7 @@ public class ProductController { //recurso é o conceito, controlador é a forma
     private ProductService service;
 
     @GetMapping(value = "/{id}" ) // "Quando chegar uma requisição GET para esta classe, execute este metodo
-    public ResponseEntity<ProductDTO> findById (@PathVariable long id) { //@Pathvariable configura o parametro com {id}
+    public ResponseEntity<ProductDTO> findById (@PathVariable Long id) { //@Pathvariable configura o parametro com {id}
         ProductDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
@@ -40,8 +40,16 @@ public class ProductController { //recurso é o conceito, controlador é a forma
     }
 
     @PutMapping(value = "/{id}" )
-    public ResponseEntity<ProductDTO> update (@PathVariable long id, @RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> update (@PathVariable Long id, @RequestBody ProductDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

@@ -49,12 +49,18 @@ public class ProductService { // essa camada devolve um DTO
         return new ProductDTO(entity);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        Repository.deleteById(id);
+    }
+
     private void copyDtoToEntity(ProductDTO dto, Product entity) {
         entity.setName(dto.getName());
         entity.setImgUrl(dto.getImgUrl());
         entity.setPrice(dto.getPrice());
         entity.setDescription(dto.getDescription());
     }
+
 
 
 }
