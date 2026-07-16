@@ -3,6 +3,7 @@ package com.cursodevsuperior.dscommerce.services;
 import com.cursodevsuperior.dscommerce.dto.ProductDTO;
 import com.cursodevsuperior.dscommerce.entities.Product;
 import com.cursodevsuperior.dscommerce.repositories.ProductRepository;
+import com.cursodevsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,8 @@ public class ProductService { // essa camada devolve um DTO
 
     @Transactional(readOnly = true ) //  um atalho poderoso para não precisar abrir/fechar transações manualmente, garantindo consistência e simplificando o código. readyonly garante que vai ser só leitura!
     public ProductDTO findById(long id) {
-        Product product = Repository.findById(id).get();
+        Product product = Repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Product not found"));
         return new ProductDTO(product);
     }
 
