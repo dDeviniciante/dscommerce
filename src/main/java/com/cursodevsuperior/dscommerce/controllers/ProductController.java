@@ -2,6 +2,7 @@ package com.cursodevsuperior.dscommerce.controllers;
 
 import com.cursodevsuperior.dscommerce.dto.ProductDTO;
 import com.cursodevsuperior.dscommerce.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,14 +34,14 @@ public class ProductController { //recurso é o conceito, controlador é a forma
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) { // O @RequestBody diz ao Spring que os dados enviados no corpo da requisição (em JSON, por exemplo) devem ser convertidos para um objeto ProductDTO
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) { // O @RequestBody diz ao Spring que os dados enviados no corpo da requisição (em JSON, por exemplo) devem ser convertidos para um objeto ProductDTO
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}" )
-    public ResponseEntity<ProductDTO> update (@PathVariable Long id, @RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> update (@PathVariable Long id,@Valid  @RequestBody ProductDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
